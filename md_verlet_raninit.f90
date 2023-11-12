@@ -1,6 +1,7 @@
 !---------------------------3D LJ Mixture at RHO=.3---------------------------------
 !-----------------------------implementing NVE MD-----------------------------------
 !------------------------------using a verlet list----------------------------------
+!-------------------------particles are randomly initialised------------------------
     module parameters
       implicit none
       integer*4,parameter :: n=2000 !no. of particles
@@ -318,33 +319,12 @@
       	  
       open(13,file='rho_0.3_raninit',status='unknown')
 
-      !do i=1,ll
-      !do j=1,ll 
-      !do k=1,ll
-      !  cell(i,j,k) = -1 !initially all cells are vacant
-      !  !part(i,j) = 0 	! initially no particle present anywhere
-      !enddo
-      !enddo
-      !enddo        
-
-!------ randomly generating 1st particle -----------------------------------------------------
-    !p = int(ll*ran3(idum)) + 1
-    !q = int(ll*ran3(idum)) + 1
-    !r = int(ll*ran3(idum)) + 1
-    !if (p.eq.ll+1)p=1
-    !if (q.eq.ll+1)q=1
-    !f (r.eq.ll+1)r=1
-    !cell(p,q,r) = 1   ! occupying the 1st particle
-    !x(i1) = dble(p)
-    !y(i1) = dble(q)
-    !z(i1) = dble(r)
     x00 = l*ran3(idum)
     y00 = l*ran3(idum)
     z00 = l*ran3(idum)
     x(i1) = x00
     y(i1) = y00
     z(i1) = z00
-	!print *,p,q,r,cell(p,q,r)
 15   x0 = l*ran3(idum)
      y0 = l*ran3(idum)
      z0 = l*ran3(idum) 
@@ -362,20 +342,10 @@
       dr = dsqrt(dr2)
       if (dr.lt.sigma) goto 15
      enddo
-
-     !p = int(ll*ran3(idum)) + 1
-     !q = int(ll*ran3(idum)) + 1
-     !r = int(ll*ran3(idum)) + 1
-     !if (p.eq.ll+1)p=1
-     !if (q.eq.ll+1)q=1
-     !if (r.eq.ll+1)r=1
-     !if (cell(p,q,r).eq.1) goto 15
      i1 = i1 + 1
      x(i1) = x0
      y(i1) = y0
      z(i1) = z0
-     !cell(p,q,r) = 1
-	!print *,p,q,r,cell(p,q,r)
      if (i1.lt.n) goto 15
 
 !-------write particle co-ordinates in file ------------------------------------------------
@@ -414,7 +384,6 @@
         vx(i)=(vx(i)-sumvx)*fsx
         vy(i)=(vy(i)-sumvy)*fsy
         vz(i)=(vz(i)-sumvz)*fsz
-	      !print*, vx(i),vy(i),vz(i)
        enddo
        return
        end
