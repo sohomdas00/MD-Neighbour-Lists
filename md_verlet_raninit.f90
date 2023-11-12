@@ -1,7 +1,6 @@
 !---------------------------3D LJ Mixture at RHO=.3---------------------------------
 !-----------------------------implementing NVE MD-----------------------------------
-!----------------using a combination of cell and verlet lists-----------------------
-!-------------------------particles are originating on a lattice--------------------
+!------------------------------using a verlet list----------------------------------
     module parameters
       implicit none
       integer*4,parameter :: n=2000 !no. of particles
@@ -496,51 +495,4 @@
        enddo ! i
  100   strlen=i
        end
-!------------------------------------------------------------------------------------------------------  
-       SUBROUTINE force_old
-        use parameters
-        implicit NONE
-        integer*4 :: i,j
-        real*8 :: xr,yr,zr,xl,yl,zl,r2,r2i,r6i,ff,r1
-        xl=l
-        yl=l
-        zl=l
-        en=0.d0
-       
-        fx = 0.d0
-        fy = 0.d0
-        fz = 0.d0
-  
-       do i=1,n-1
-         do j=i+1,n
-          xr = x(i) - x(j)
-          yr = y(i) - y(j)
-          zr = z(i) - z(j)
-  !_______minimum image convention__________
-          xr=xr-xl*nint(xr/xl)
-          yr=yr-yl*nint(yr/yl)
-          zr=zr-zl*nint(zr/zl)
-  !_________________________________________
-          r2=xr**2d0 + yr**2d0 + zr**2d0    
-          if (r2.le.rcut**2d0) then
-            r1=dsqrt(r2)
-            !print *, r1
-            r2i=1d0/r2
-            r6i=r2i**3d0
-            ff=48d0*r2i*r6i*(r6i-0.5d0)
-            fx(i)=fx(i)+(ff*xr-fcorr*xr/r1)
-            !write(*,'(9(es10.3,X))')xr,yr,zr,ff,fcorr,xr,r2,r1,xr/r1
-            fx(j)=fx(j)-(ff*xr-fcorr*xr/r1)
-            fy(i)=fy(i)+(ff*yr-fcorr*yr/r1)
-            fy(j)=fy(j)-(ff*yr-fcorr*yr/r1)
-            fz(i)=fz(i)+(ff*zr-fcorr*zr/r1)
-            fz(j)=fz(j)-(ff*zr-fcorr*zr/r1)
-            en=en+(4d0*r6i*(r6i-1d0))-ecut-fcorr*(r1-rcut)
-            !write(*,'(2(i5,2X),6(es10.3,2X))') i,j,fx(i),fx(j),fy(i),fy(j),fz(i),fz(j)
-          endif
-         enddo
-        enddo
-        return
-        end     
-  !*****************************************************************************************************	
-	
+!*******************************************************************************
