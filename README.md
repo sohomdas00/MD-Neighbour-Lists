@@ -1,3 +1,3 @@
 # MD-Neighbour-Lists
 
-Static properties of LJ fluid are probed via incorporating various neighbour lists to speed up simulation.
+Static properties of LJ fluid are probed via incorporating the Verlet list to speed up simulation.
